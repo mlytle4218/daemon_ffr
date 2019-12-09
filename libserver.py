@@ -3,8 +3,12 @@ import selectors
 import json
 import io
 import struct
+import inspect
 
 from my_logger import log
+
+
+# log(inspect.stack()[0][0].f_code.co_name)
 
 request_search = {
     "morpheus": "Follow the white rabbit. \U0001f430",
@@ -32,7 +36,11 @@ class Message:
         self.request = None
         self.response_created = False
 
+    def set_trial(self,input):
+        log(input)
+
     def _set_selector_events_mask(self, mode):
+        
         """Set selector to listen for events: mode is 'r', 'w', or 'rw'."""
         if mode == "r":
             events = selectors.EVENT_READ
@@ -45,6 +53,7 @@ class Message:
         self.selector.modify(self.sock, events, data=self)
 
     def _read(self):
+        
         try:
             # Should be ready to read
             data = self.sock.recv(4096)
@@ -58,6 +67,7 @@ class Message:
                 raise RuntimeError("Peer closed.")
 
     def _write(self):
+        
         if self._send_buffer:
             print("sending", repr(self._send_buffer), "to", self.addr)
             try:
@@ -73,9 +83,11 @@ class Message:
                     self.close()
 
     def _json_encode(self, obj, encoding):
+        
         return json.dumps(obj, ensure_ascii=False).encode(encoding)
 
     def _json_decode(self, json_bytes, encoding):
+        
         tiow = io.TextIOWrapper(
             io.BytesIO(json_bytes), encoding=encoding, newline=""
         )
@@ -83,9 +95,8 @@ class Message:
         tiow.close()
         return obj
 
-    def _create_message(
-        self, *, content_bytes, content_type, content_encoding
-    ):
+    def _create_message( self, *, content_bytes, content_type, content_encoding):
+        
         jsonheader = {
             "byteorder": sys.byteorder,
             "content-type": content_type,
@@ -98,6 +109,7 @@ class Message:
         return message
 
     def _create_response_json_content_old(self):
+        
         action = self.request.get("action")
         if action == "search":
             query = self.request.get("value")
@@ -114,6 +126,7 @@ class Message:
         return response
 
     def _create_response_json_content(self):
+        
         action = self.request.get("action")
         response = None
         if action == "poll":
@@ -151,22 +164,25 @@ class Message:
 
         return response
 
-    def _create_response_binary_content(self):
-        response = {
-            "content_bytes": b"First 10 bytes of request: "
-            + self.request[:10],
-            "content_type": "binary/custom-server-binary-type",
-            "content_encoding": "binary",
-        }
-        return response
+    # def _create_response_binary_content(self):
+    #     
+    #     response = {
+    #         "content_bytes": b"First 10 bytes of request: "
+    #         + self.request[:10],
+    #         "content_type": "binary/custom-server-binary-type",
+    #         "content_encoding": "binary",
+    #     }
+    #     return response
 
     def process_events(self, mask):
+        
         if mask & selectors.EVENT_READ:
             self.read()
         if mask & selectors.EVENT_WRITE:
             self.write()
 
     def read(self):
+        
         self._read()
 
         if self._jsonheader_len is None:
@@ -181,6 +197,7 @@ class Message:
                 self.process_request()
 
     def write(self):
+        log('write')
         if self.request:
             if not self.response_created:
                 self.create_response()
@@ -188,6 +205,7 @@ class Message:
         self._write()
 
     def close(self):
+        
         print("closing connection to", self.addr)
         try:
             self.selector.unregister(self.sock)
@@ -209,6 +227,7 @@ class Message:
             self.sock = None
 
     def process_protoheader(self):
+        
         hdrlen = 2
         if len(self._recv_buffer) >= hdrlen:
             self._jsonheader_len = struct.unpack(
@@ -217,6 +236,7 @@ class Message:
             self._recv_buffer = self._recv_buffer[hdrlen:]
 
     def process_jsonheader(self):
+        
         hdrlen = self._jsonheader_len
         if len(self._recv_buffer) >= hdrlen:
             self.jsonheader = self._json_decode(
@@ -233,31 +253,53 @@ class Message:
                     raise ValueError(f'Missing required header "{reqhdr}".')
 
     def process_request(self):
+        
         content_len = self.jsonheader["content-length"]
         if not len(self._recv_buffer) >= content_len:
             return
         data = self._recv_buffer[:content_len]
         self._recv_buffer = self._recv_buffer[content_len:]
-        if self.jsonheader["content-type"] == "text/json":
-            encoding = self.jsonheader["content-encoding"]
-            self.request = self._json_decode(data, encoding)
-            print("received request", repr(self.request), "from", self.addr)
-        else:
-            # Binary or unknown content-type
-            self.request = data
-            print(
-                f'received {self.jsonheader["content-type"]} request from',
-                self.addr,
-            )
+        encoding = self.jsonheader["content-encoding"]
+        self.request = self._json_decode(data, encoding)
+        print("received request", repr(self.request), "from", self.addr)
         # Set selector to listen for write events, we're done reading.
         self._set_selector_events_mask("w")
 
+    # def process_request_old(self):
+    #     
+    #     content_len = self.jsonheader["content-length"]
+    #     if not len(self._recv_buffer) >= content_len:
+    #         return
+    #     data = self._recv_buffer[:content_len]
+    #     self._recv_buffer = self._recv_buffer[content_len:]
+    #     if self.jsonheader["content-type"] == "text/json":
+    #         encoding = self.jsonheader["content-encoding"]
+    #         self.request = self._json_decode(data, encoding)
+    #         print("received request", repr(self.request), "from", self.addr)
+    #     else:
+    #         # Binary or unknown content-type
+    #         self.request = data
+    #         print(
+    #             f'received {self.jsonheader["content-type"]} request from',
+    #             self.addr,
+    #         )
+    #     # Set selector to listen for write events, we're done reading.
+    #     self._set_selector_events_mask("w")
+
     def create_response(self):
-        if self.jsonheader["content-type"] == "text/json":
-            response = self._create_response_json_content()
-        else:
-            # Binary or unknown content-type
-            response = self._create_response_binary_content()
+        
+        response = self._create_response_json_content()
         message = self._create_message(**response)
         self.response_created = True
         self._send_buffer += message
+
+    # def create_response_old(self):
+    #     
+    #     if self.jsonheader["content-type"] == "text/json":
+    #         response = self._create_response_json_content()
+    #     else:
+    #         # Binary or unknown content-type
+    #         response = self._create_response_binary_content()
+    #     message = self._create_message(**response)
+    #     self.response_created = True
+    #     self._send_buffer += message

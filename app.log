@@ -1,12 +1,40 @@
-2019-11-27 17:51:15 - starting connection to ('localhost', 60000)
-2019-11-27 17:51:15 - sending b'\x00g{"byteorder": "little", "content-type": "text/json", "content-encoding": "utf-8", "content-length": 18}{"action": "poll"}' to ('localhost', 60000)
-2019-11-27 17:51:15 - received response {'result': [{'id': 0, 'name': 'bob'}, {'id': 1, 'name': 'tony'}, {'id': 2, 'name': 'tammy'}, {'id': 3, 'name': 'erica'}, {'id': 4, 'name': 'mitch'}, {'id': 4, 'name': 'mitch'}]} from  ('localhost', 60000)
-2019-11-27 17:51:15 - closing connection to ('localhost', 60000)
-2019-11-27 17:51:16 - starting connection to ('localhost', 60000)
-2019-11-27 17:51:16 - sending b'\x00g{"byteorder": "little", "content-type": "text/json", "content-encoding": "utf-8", "content-length": 34}{"action": "add", "data": "mitch"}' to ('localhost', 60000)
-2019-11-27 17:51:16 - received response {'result': 'add'} from  ('localhost', 60000)
-2019-11-27 17:51:16 - closing connection to ('localhost', 60000)
-2019-11-27 17:51:18 - starting connection to ('localhost', 60000)
-2019-11-27 17:51:18 - sending b'\x00g{"byteorder": "little", "content-type": "text/json", "content-encoding": "utf-8", "content-length": 18}{"action": "poll"}' to ('localhost', 60000)
-2019-11-27 17:51:18 - received response {'result': [{'id': 0, 'name': 'bob'}, {'id': 1, 'name': 'tony'}, {'id': 2, 'name': 'tammy'}, {'id': 3, 'name': 'erica'}, {'id': 4, 'name': 'mitch'}, {'id': 4, 'name': 'mitch'}, {'id': 4, 'name': 'mitch'}]} from  ('localhost', 60000)
-2019-11-27 17:51:18 - closing connection to ('localhost', 60000)
+2019-12-08 22:02:30 - starting connection to ('localhost', 60000)
+2019-12-08 22:02:30 - sending b'\x00g{"byteorder": "little", "content-type": "text/json", "content-encoding": "utf-8", "content-length": 18}{"action": "poll"}' to ('localhost', 60000)
+2019-12-08 22:02:30 - key.data is None
+2019-12-08 22:02:30 - key.data is NOT None
+2019-12-08 22:02:30 - tony
+2019-12-08 22:02:30 - key.data is NOT None
+2019-12-08 22:02:30 - tony
+2019-12-08 22:02:30 - write
+2019-12-08 22:02:30 - received response {'result': [{'id': 0, 'name': 'bob'}, {'id': 1, 'name': 'tony'}, {'id': 2, 'name': 'tammy'}, {'id': 3, 'name': 'erica'}]} from  ('localhost', 60000)
+2019-12-08 22:02:30 - closing connection to ('localhost', 60000)
+2019-12-08 22:02:32 - starting connection to ('localhost', 60000)
+2019-12-08 22:02:32 - sending b'\x00g{"byteorder": "little", "content-type": "text/json", "content-encoding": "utf-8", "content-length": 34}{"action": "add", "data": "mitch"}' to ('localhost', 60000)
+2019-12-08 22:02:32 - key.data is None
+2019-12-08 22:02:32 - key.data is NOT None
+2019-12-08 22:02:32 - tony
+2019-12-08 22:02:32 - key.data is NOT None
+2019-12-08 22:02:32 - tony
+2019-12-08 22:02:32 - write
+2019-12-08 22:02:32 - received response {'result': 'add'} from  ('localhost', 60000)
+2019-12-08 22:02:32 - closing connection to ('localhost', 60000)
+2019-12-08 22:02:43 - starting connection to ('localhost', 60000)
+2019-12-08 22:02:43 - sending b'\x00g{"byteorder": "little", "content-type": "text/json", "content-encoding": "utf-8", "content-length": 18}{"action": "poll"}' to ('localhost', 60000)
+2019-12-08 22:02:43 - key.data is None
+2019-12-08 22:02:43 - key.data is NOT None
+2019-12-08 22:02:43 - tony
+2019-12-08 22:02:43 - key.data is NOT None
+2019-12-08 22:02:43 - tony
+2019-12-08 22:02:43 - write
+2019-12-08 22:02:43 - received response {'result': [{'id': 0, 'name': 'bob'}, {'id': 1, 'name': 'tony'}, {'id': 2, 'name': 'tammy'}, {'id': 3, 'name': 'erica'}, {'id': 4, 'name': 'mitch'}]} from  ('localhost', 60000)
+2019-12-08 22:02:43 - closing connection to ('localhost', 60000)
+2019-12-08 22:02:45 - starting connection to ('localhost', 60000)
+2019-12-08 22:02:45 - sending b'\x00g{"byteorder": "little", "content-type": "text/json", "content-encoding": "utf-8", "content-length": 18}{"action": "poll"}' to ('localhost', 60000)
+2019-12-08 22:02:45 - key.data is None
+2019-12-08 22:02:45 - key.data is NOT None
+2019-12-08 22:02:45 - tony
+2019-12-08 22:02:45 - key.data is NOT None
+2019-12-08 22:02:45 - tony
+2019-12-08 22:02:45 - write
+2019-12-08 22:02:45 - received response {'result': [{'id': 0, 'name': 'bob'}, {'id': 1, 'name': 'tony'}, {'id': 2, 'name': 'tammy'}, {'id': 3, 'name': 'erica'}, {'id': 4, 'name': 'mitch'}]} from  ('localhost', 60000)
+2019-12-08 22:02:45 - closing connection to ('localhost', 60000)
